@@ -1,37 +1,25 @@
-## Welcome to GitHub Pages
+title: "Interactive Map"
+author: "Daniela"
+date: "10/05/2021"
+output: html_document
+---
 
-You can use the [editor on GitHub](https://github.com/Danielaagrz/Interactive-Map/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
-
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
-
-### Markdown
-
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
-
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(leaflet)
+library(dplyr)
 ```
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/Danielaagrz/Interactive-Map/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+# Mexico's cities with the largest population
+```{r}
+cities <- data.frame(name = c("Mexico City", "Guadalajara", "Monterrey", "Cancun", "Tijuana", "Puebla", "Leon", "Ciudad Juarez", "Merida", "Mexicali", "Acapulco"),
+                        pop = c(9000000, 1460000, 1109000, 888797, 2181104, 3195000, 1578626, 1539758, 892363,1033000, 687608),
+                        lat = c(19.43263 , 20.6720375, 25.6802019, 21.1617854,32.5010188, 18.833333, 21.1218598, 31.7097961, 20.9670759, 32.6248622, 16.8680495),
+                        lng = c(-99.1331785, -103.3383962, -100.3152586, -86.8510468,-116.9646629, -98, -101.6825081, -106.4555818, -89.6237402, -115.448325, -99.8940182),
+                        col = sample(c("red", "blue", "green"), 11, replace = T))
+cities %>%
+  leaflet() %>%
+  addTiles() %>%
+  addCircles(radius = sqrt(cities$pop) * 30, color = cities$col, weight = 1)
+```
+### Red, Blue and Green (from largest to smallest population, respectively)
